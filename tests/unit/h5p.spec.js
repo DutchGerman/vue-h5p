@@ -42,7 +42,7 @@ describe('Component', () => {
     expect(wrapper.find('iframe').element.constructor.name).toBe('HTMLIFrameElement')
   })
 
-  it('renders default slot content while loading', async () => {
+  it('renders default slot content while loading or when iframeLoading is true', async () => {
     ({ renderDefault, wrapper } = createComponent({
       src: '/hello-world'
     }))
@@ -51,6 +51,8 @@ describe('Component', () => {
     await flushPromises()
     expect(wrapper.vm.loading).toBe(false)
     expect(renderDefault).toHaveBeenCalledTimes(1)
+    expect(wrapper.vm.iframeLoading).toBe(true)
+    expect(renderDefault).toHaveBeenCalled()
   })
 
   it('renders error slot on fetch-errors and provides response object', async () => {
