@@ -53,6 +53,9 @@ describe('Component', () => {
     expect(renderDefault).toHaveBeenCalledTimes(1)
     expect(wrapper.vm.iframeLoading).toBe(true)
     expect(renderDefault).toHaveBeenCalled()
+    wrapper.vm.iframeLoading = false;
+    expect(wrapper.vm.iframeLoading).toBe(false)
+    expect(renderDefault).toHaveBeenCalledTimes(1)
   })
 
   it('renders error slot on fetch-errors and provides response object', async () => {
