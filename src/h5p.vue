@@ -5,13 +5,16 @@
   <div v-else-if="error">
     <slot name="error" :error="error"/>
   </div>
-  <iframe
-    v-else
-    ref="iframe"
-    style="width: 100%; height: 100%; border: none;"
-    :srcdoc="srcdoc"
-    @load="addEventHandlers"
-  />
+  <div style="height: 100%" v-else>
+    <slot v-if="loadingIframe"/>
+    <iframe
+      v-show="!loadingIframe"
+      ref="iframe"
+      style="width: 100%; height: 100%; border: none;"
+      :srcdoc="srcdoc"
+      @load="addEventHandlers"
+    />
+  </div>
 </template>
 
 <script>
@@ -62,6 +65,7 @@ export default {
   data () {
     return {
       loading: true,
+      iframeLoading: true,
       error: undefined,
       srcdoc: ''
     }
@@ -141,6 +145,7 @@ export default {
   },
   methods: {
     addEventHandlers () {
+      this.iframeLoading = false
       this.$refs.iframe.contentWindow.H5P.externalDispatcher.on('*', (ev) => {
         this.$emit(ev.type.toLowerCase(), ev.data)
       })
